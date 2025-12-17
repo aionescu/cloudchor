@@ -18,4 +18,4 @@ For more details, see the PEPM '26 paper: [Towards Lightweight and Efficient Cho
 ## License
 
 This repository is provided under the terms of the [Mozilla Public License 2.0](LICENSE.txt).
-It is based on HasChor, which is provided under the [MIT License](LICENSE-HasChor.txt).
+It is based on HasChor, which is provided under the [BSD-3-Clause License](LICENSE-HasChor.txt).
