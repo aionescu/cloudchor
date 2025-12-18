@@ -5,6 +5,8 @@
 
 # CloudChor
 
+[![Hackage](https://img.shields.io/hackage/v/cloudchor?style=for-the-badge)](https://hackage.haskell.org/package/cloudchor)
+
 CloudChor is a Haskell library for lighweight and efficient choreographic programming aimed at developing cloud services.
 It is an extension of the [HasChor](https://github.com/gshen42/HasChor) library.
 
