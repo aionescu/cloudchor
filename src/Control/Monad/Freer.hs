@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2022 Gan Shen
+-- SPDX-FileCopyrightText: 2025 Alex Ionescu
+-- SPDX-License-Identifier: MPL-2.0 AND BSD-3-Clause
+
 -- | This module defines the freer monad `Freer`, which allows manipulating
 -- effectful computations algebraically.
 module Control.Monad.Freer where

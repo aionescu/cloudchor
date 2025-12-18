@@ -1,3 +1,6 @@
+-- SPDX-FileCopyrightText: 2022 Gan Shen
+-- SPDX-License-Identifier: BSD-3-Clause
+
 -- Karatsuba Fast Multiplication Reference Implementation
 import System.Environment
 

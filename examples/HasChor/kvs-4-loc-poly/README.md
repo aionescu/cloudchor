@@ -1,3 +1,8 @@
+<!--
+  SPDX-FileCopyrightText: 2022 Gan Shen
+  SPDX-License-Identifier: BSD-3-Clause
+-->
+
 # Example: Key-value store with location polymorphism
 
 This is the final version of the 4-stage key-value store tutorial where we define the location-polymorphic choreography `doBackup`. We use it to define `doubleBackupReplicationStrategy`, which replicates data to two backup locations (`backup1` and `backup2`).

@@ -1,3 +1,8 @@
+<!--
+  SPDX-FileCopyrightText: 2022 Gan Shen
+  SPDX-License-Identifier: BSD-3-Clause
+-->
+
 # Example: Simple client-server key-value store
 
 This is the first version of the 4-stage key-value store tutorial and implements a simple client-server key-value store. The client can `PUT` a key-value pair to the server and `GET` a value for a given key.

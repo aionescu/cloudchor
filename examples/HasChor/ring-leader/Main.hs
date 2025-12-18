@@ -1,3 +1,6 @@
+-- SPDX-FileCopyrightText: 2022 Gan Shen
+-- SPDX-License-Identifier: BSD-3-Clause
+
 {-# LANGUAGE BlockArguments #-}
 {-# LANGUAGE DataKinds      #-}
 {-# LANGUAGE LambdaCase     #-}

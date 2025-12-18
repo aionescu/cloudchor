@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2022 Gan Shen
+-- SPDX-FileCopyrightText: 2025 Alex Ionescu
+-- SPDX-License-Identifier: MPL-2.0 AND BSD-3-Clause
+
 {-# LANGUAGE BlockArguments     #-}
 {-# LANGUAGE DataKinds          #-}
 {-# LANGUAGE ImpredicativeTypes #-}

@@ -1,3 +1,8 @@
+<!--
+  SPDX-FileCopyrightText: 2022 Gan Shen
+  SPDX-License-Identifier: BSD-3-Clause
+-->
+
 # Location-polymorphic bookseller
 
 This example implements the location-polymorphic bookseller where the

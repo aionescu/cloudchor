@@ -1,3 +1,8 @@
+<!--
+  SPDX-FileCopyrightText: 2022 Gan Shen
+  SPDX-License-Identifier: BSD-3-Clause
+-->
+
 # Bookseller as individual network programs
 
 This example implmenets the bookseller protocol as individual network

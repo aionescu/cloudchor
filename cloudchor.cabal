@@ -1,5 +1,8 @@
 cabal-version: 3.8
 
+-- SPDX-FileCopyrightText: 2025 Alex Ionescu
+-- SPDX-License-Identifier: MPL-2.0
+
 name: cloudchor
 version: 0.1.0.0
 synopsis: Lightweight and efficient choreographic programming for cloud services
@@ -14,9 +17,7 @@ maintainer: Alex Ionescu <hackage@ionescu.sh>
 copyright: Copyright (C) 2025 Alex Ionescu
 
 license: MPL-2.0
-license-files:
-  LICENSE.txt
-  LICENSE-HasChor.txt
+license-file: LICENSE
 
 build-type: Simple
 extra-doc-files: README.md

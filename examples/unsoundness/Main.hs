@@ -1,3 +1,6 @@
+-- SPDX-FileCopyrightText: 2025 Alex Ionescu
+-- SPDX-License-Identifier: MPL-2.0
+
 {-# LANGUAGE BlockArguments     #-}
 {-# LANGUAGE DataKinds          #-}
 {-# LANGUAGE DerivingStrategies #-}

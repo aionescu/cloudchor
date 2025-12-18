@@ -1,3 +1,8 @@
+<!--
+  SPDX-FileCopyrightText: 2022 Gan Shen
+  SPDX-License-Identifier: BSD-3-Clause
+-->
+
 # Higher-order bookseller
 
 This example implements the higher-order bookseller protocol where

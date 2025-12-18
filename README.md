@@ -1,3 +1,8 @@
+<!--
+  SPDX-FileCopyrightText: 2025 Alex Ionescu
+  SPDX-License-Identifier: MPL-2.0
+-->
+
 # CloudChor
 
 CloudChor is a Haskell library for lighweight and efficient choreographic programming with multiply-located values.
@@ -17,5 +22,5 @@ For more details, see the PEPM '26 paper: [Towards Lightweight and Efficient Cho
 
 ## License
 
-This repository is provided under the terms of the [Mozilla Public License 2.0](LICENSE.txt).
-It is based on HasChor, which is provided under the [BSD-3-Clause License](LICENSE-HasChor.txt).
+This repository is provided under the terms of the [Mozilla Public License 2.0](LICENSES/MPL-2.0.txt).
+It is based on HasChor, which is provided under the [BSD-3-Clause License](LICENSES/BSD-3-Clause.txt).

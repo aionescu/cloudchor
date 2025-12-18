@@ -1,3 +1,8 @@
+<!--
+  SPDX-FileCopyrightText: 2022 Gan Shen
+  SPDX-License-Identifier: BSD-3-Clause
+-->
+
 # Example: Key-value store with higher-order choreography
 
 This is the third version of the 4-stage key-value store tutorial. We refactor the second version using HasChor's higher-order choreography. We define `ReplicationStrategy`, which specifies the details of replication and modify the `kvs` to take a `ReplicationStrategy`.

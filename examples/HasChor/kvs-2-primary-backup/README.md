@@ -1,3 +1,8 @@
+<!--
+  SPDX-FileCopyrightText: 2022 Gan Shen
+  SPDX-License-Identifier: BSD-3-Clause
+-->
+
 # Example: Primary-backup key-value store
 
 This is the second version of the 4-stage key-value store tutorial. This builds on the first version and adds a backup location to improve durability.
