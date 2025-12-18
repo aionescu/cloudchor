@@ -1,0 +1,49 @@
+cabal-version: 3.8
+
+-- SPDX-FileCopyrightText: 2025 Alex Ionescu
+-- SPDX-License-Identifier: MPL-2.0
+
+name: cloudchor-benchmark
+version: 0.0.0.0
+
+build-type: Simple
+
+common threaded
+  ghc-options:
+    -threaded
+    -rtsopts
+    -with-rtsopts=-N
+
+common warnings
+  ghc-options:
+    -Wall
+    -Wcompat
+    -Widentities
+    -Wmissing-deriving-strategies
+    -Wno-name-shadowing
+    -Wno-unused-do-bind
+    -Wno-type-defaults
+    -Wpartial-fields
+    -Wprepositive-qualified-module
+    -Wredundant-constraints
+    -Wunused-packages
+
+executable benchmark
+  import: threaded, warnings
+
+  default-language: GHC2021
+  hs-source-dirs: .
+  main-is: Main.hs
+
+  other-modules:
+    Benchmark
+    Choreos.Bookseller
+    Choreos.CleanRoom
+    Choreos.Kvs
+
+  build-depends:
+    base         >= 4.16 && < 4.21
+    , containers >= 0.6  && < 0.7
+    , sop-core   >= 0.5  && < 0.6
+    , time       >= 1.11 && < 1.13
+    , cloudchor

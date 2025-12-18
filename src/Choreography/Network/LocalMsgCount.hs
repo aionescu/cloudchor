@@ -5,7 +5,7 @@
 
 -- | This module defines an instrumented version of the `Local` backend,
 -- which counts how many `Send` operations are performed during execution of the choreography.
--- It is used by the benchmarks in `bench/`.
+-- It is used by the benchmarks in `benchmark/`.
 module Choreography.Network.LocalMsgCount where
 
 import Choreography.Location

@@ -1,7 +1,10 @@
 -- SPDX-FileCopyrightText: 2025 Alex Ionescu
 -- SPDX-License-Identifier: MPL-2.0
 
-packages: .
+packages:
+  cloudchor.cabal
+  benchmark/cloudchor-benchmark.cabal
+  examples/cloudchor-examples.cabal
 
 constraints:
   zlib +bundled-c-zlib
