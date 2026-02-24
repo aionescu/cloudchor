@@ -29,7 +29,7 @@ import Choreography.Network.LocalMsgCount
 -- NB: This is a more specific version of the original `cond'` function's type.
 type Cond_' =
   forall m l a b
-  . (Bounded a, Enum a, Show a, Read a, KnownSymbol l)
+  .  (Bounded a, Enum a, Show a, Read a, KnownSymbol l)
   => (Proxy l, Unwrap l -> m a)
   -> (a -> Choreo m (b @ l))
   -> Choreo m (b @ l)

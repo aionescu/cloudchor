@@ -87,7 +87,13 @@ runQuery (Dataset ds) q =
 
 -- Error-handling (if datasets don't conform to schema)
 
-getClientDataset :: (KnownSymbol server, KnownSymbol client) => Int -> Schema @ server -> Proxy server -> Proxy client -> Choreo IO (Dataset @ server)
+getClientDataset
+  :: (KnownSymbol server, KnownSymbol client)
+  => Int
+  -> Schema @ server
+  -> Proxy server
+  -> Proxy client
+  -> Choreo IO (Dataset @ server)
 getClientDataset tries schema server client =
   if tries <= 0 then
     pure $ wrap emptyDataset
@@ -97,7 +103,13 @@ getClientDataset tries schema server client =
       True -> pure dataset
       False -> getClientDataset (tries - 1) schema server client
 
-getClientDatasets :: (KnownSymbol server, All KnownSymbol clients) => Int -> Schema @ server -> Proxy server -> NP Proxy clients -> Choreo IO (NP (K Dataset) clients @ server)
+getClientDatasets
+  :: (KnownSymbol server, All KnownSymbol clients)
+  => Int
+  -> Schema @ server
+  -> Proxy server
+  -> NP Proxy clients
+  -> Choreo IO (NP (K Dataset) clients @ server)
 getClientDatasets _ _ _ Nil = pure $ wrap Nil
 getClientDatasets tries schema server (client :* clients) = do
   dataset <- getClientDataset tries schema server client
@@ -106,7 +118,11 @@ getClientDatasets tries schema server (client :* clients) = do
 
 -- Main choreography
 
-cleanRoom :: (KnownSymbol server, All KnownSymbol clients) => Proxy server -> NP Proxy clients -> Choreo IO ()
+cleanRoom
+  :: (KnownSymbol server, All KnownSymbol clients)
+  => Proxy server
+  -> NP Proxy clients
+  -> Choreo IO ()
 cleanRoom server clients = do
   -- Every client loads their data schema and sends it to the server
   schemas <- (clients, \c _ -> loadSchema c) *~~> server
