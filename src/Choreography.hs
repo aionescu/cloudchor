@@ -2,8 +2,6 @@
 -- SPDX-FileCopyrightText: 2025 Alex Ionescu
 -- SPDX-License-Identifier: MPL-2.0 AND BSD-3-Clause
 
-{-# LANGUAGE ExplicitNamespaces #-}
-
 -- | This module defines the interface to HasChor. The client of the library is
 -- highly recommended to only use constructs exported by this module.
 module Choreography (

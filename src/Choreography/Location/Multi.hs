@@ -1,14 +1,6 @@
 -- SPDX-FileCopyrightText: 2025 Alex Ionescu
 -- SPDX-License-Identifier: MPL-2.0
 
-{-# LANGUAGE AllowAmbiguousTypes   #-}
-{-# LANGUAGE BlockArguments        #-}
-{-# LANGUAGE DataKinds             #-}
-{-# LANGUAGE GADTs                 #-}
-{-# LANGUAGE ImpredicativeTypes    #-}
-{-# LANGUAGE PartialTypeSignatures #-}
-{-# LANGUAGE TypeFamilies          #-}
-
 -- | This module defines multiply-located values and combinators for manipulating them.
 module Choreography.Location.Multi where
 

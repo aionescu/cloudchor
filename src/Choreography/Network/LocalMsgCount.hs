@@ -1,8 +1,6 @@
 -- SPDX-FileCopyrightText: 2025 Alex Ionescu
 -- SPDX-License-Identifier: MPL-2.0
 
-{-# LANGUAGE GADTs #-}
-
 -- | This module defines an instrumented version of the `Local` backend,
 -- which counts how many `Send` operations are performed during execution of the choreography.
 -- It is used by the benchmarks in `benchmark/`.

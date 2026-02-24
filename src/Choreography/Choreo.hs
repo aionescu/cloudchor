@@ -2,11 +2,6 @@
 -- SPDX-FileCopyrightText: 2025 Alex Ionescu
 -- SPDX-License-Identifier: MPL-2.0 AND BSD-3-Clause
 
-{-# LANGUAGE BlockArguments     #-}
-{-# LANGUAGE GADTs              #-}
-{-# LANGUAGE ImpredicativeTypes #-}
-{-# LANGUAGE LambdaCase         #-}
-
 -- | This module defines `Choreo`, the monad for writing choreographies.
 module Choreography.Choreo where
 

@@ -32,7 +32,19 @@ source-repository head
   type: git
   location: https://github.com/aionescu/cloudchor
 
-common warnings
+library
+  default-language: GHC2021
+  default-extensions:
+    AllowAmbiguousTypes
+    BlockArguments
+    DataKinds
+    ExplicitNamespaces
+    GADTs
+    ImpredicativeTypes
+    LambdaCase
+    PartialTypeSignatures
+    TypeFamilies
+
   ghc-options:
     -Wall
     -Wcompat
@@ -46,11 +58,7 @@ common warnings
     -Wredundant-constraints
     -Wunused-packages
 
-library
-  import: warnings
-  default-language: GHC2021
   hs-source-dirs: src
-
   exposed-modules:
     Choreography
     Choreography.Choreo

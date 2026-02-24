@@ -2,8 +2,6 @@
 -- SPDX-FileCopyrightText: 2025 Alex Ionescu
 -- SPDX-License-Identifier: MPL-2.0 AND BSD-3-Clause
 
-{-# LANGUAGE GADTs #-}
-
 -- | This module defines the multi-thread backend for the `Network` monad.
 module Choreography.Network.Local where
 

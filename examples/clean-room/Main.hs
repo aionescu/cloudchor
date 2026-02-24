@@ -1,16 +1,6 @@
 -- SPDX-FileCopyrightText: 2025 Alex Ionescu
 -- SPDX-License-Identifier: MPL-2.0
 
-{-# OPTIONS_GHC -Wno-redundant-constraints #-}
-
-{-# LANGUAGE BlockArguments     #-}
-{-# LANGUAGE DataKinds          #-}
-{-# LANGUAGE DerivingStrategies #-}
-{-# LANGUAGE GADTs              #-}
-{-# LANGUAGE ImpredicativeTypes #-}
-{-# LANGUAGE LambdaCase         #-}
-{-# LANGUAGE ParallelListComp   #-}
-
 module Main where
 
 import Control.Monad(replicateM)
@@ -47,7 +37,7 @@ data Query
   | Max
   deriving stock (Eq, Ord, Show, Read, Enum, Bounded)
 
-loadSchema :: KnownSymbol l => Proxy l -> IO Schema
+loadSchema :: Proxy l -> IO Schema
 loadSchema _ = pure Schema
 
 mergeSchemas :: [Schema] -> Schema
@@ -60,7 +50,7 @@ emptyDataset :: Dataset
 emptyDataset = Dataset []
 
 -- Simulate some I/O to load a dataset (e.g. from a file)
-loadDataset :: KnownSymbol l => Proxy l -> IO Dataset
+loadDataset :: Proxy l -> IO Dataset
 loadDataset _ = do
   n <- randomRIO (5, 10)
   Dataset <$> replicateM n (randomRIO (-100, 100))
@@ -69,10 +59,10 @@ mergeDatasets :: [Dataset] -> Dataset
 mergeDatasets = fold
 
 -- Simulate the selection of a query (by picking one randomly)
-loadQuery :: KnownSymbol l => Proxy l -> Schema -> IO Query
+loadQuery :: Proxy l -> Schema -> IO Query
 loadQuery _ _ = toEnum <$> randomRIO (fromEnum @Query minBound, fromEnum @Query maxBound)
 
-agreeWithQueries :: KnownSymbol l => Proxy l -> [Query] -> IO Bool
+agreeWithQueries :: Proxy l -> [Query] -> IO Bool
 agreeWithQueries _ _ = pure True
 
 runQuery :: Dataset -> Query -> IO Int

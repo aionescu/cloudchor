@@ -2,8 +2,6 @@
 -- SPDX-FileCopyrightText: 2025 Alex Ionescu
 -- SPDX-License-Identifier: MPL-2.0 AND BSD-3-Clause
 
-{-# LANGUAGE DataKinds #-}
-
 -- | This module defines locations and located values.
 module Choreography.Location where
 

@@ -2,9 +2,6 @@
 -- SPDX-FileCopyrightText: 2025 Alex Ionescu
 -- SPDX-License-Identifier: MPL-2.0 AND BSD-3-Clause
 
-{-# LANGUAGE DataKinds #-}
-{-# LANGUAGE GADTs     #-}
-
 -- | This module implments the HTTP message transport backend for the `Network`
 -- monad.
 module Choreography.Network.Http where

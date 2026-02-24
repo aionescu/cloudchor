@@ -1,15 +1,6 @@
 -- SPDX-FileCopyrightText: 2025 Alex Ionescu
 -- SPDX-License-Identifier: MPL-2.0
 
-{-# LANGUAGE BlockArguments     #-}
-{-# LANGUAGE DataKinds          #-}
-{-# LANGUAGE DerivingStrategies #-}
-{-# LANGUAGE GADTs              #-}
-{-# LANGUAGE ImpredicativeTypes #-}
-{-# LANGUAGE ParallelListComp   #-}
-{-# LANGUAGE LambdaCase         #-}
-{-# LANGUAGE ViewPatterns       #-}
-
 module Main where
 
 import Data.Proxy(Proxy(..))

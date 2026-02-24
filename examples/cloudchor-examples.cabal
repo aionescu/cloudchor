@@ -8,6 +8,18 @@ version: 0.0.0.0
 
 build-type: Simple
 
+common extensions
+  default-language: GHC2021
+  default-extensions:
+    BlockArguments
+    DataKinds
+    DerivingStrategies
+    GADTs
+    ImpredicativeTypes
+    LambdaCase
+    ParallelListComp
+    ViewPatterns
+
 common warnings
   ghc-options:
     -Wall
@@ -23,8 +35,8 @@ common warnings
     -Wunused-packages
 
 executable clean-room
-  import: warnings
-  default-language: GHC2021
+  import: extensions, warnings
+
   hs-source-dirs: clean-room
   main-is: Main.hs
 
@@ -35,8 +47,8 @@ executable clean-room
     , cloudchor
 
 executable unsoundness
-  import: warnings
-  default-language: GHC2021
+  import: extensions, warnings
+
   hs-source-dirs: unsoundness
   main-is: Main.hs
 
