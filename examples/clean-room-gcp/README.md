@@ -12,6 +12,27 @@ change.
 
 ---
 
+## Quick start (automated)
+
+A single script handles everything: GCP setup, binary build, and execution.
+
+```bash
+export GCP_PROJECT=your-project-id
+
+# Run all participants locally, messages through GCP Pub/Sub (recommended for testing)
+./examples/clean-room-gcp/deploy.sh --local
+
+# Run each participant on a separate GCE VM (true cloud deployment)
+./examples/clean-room-gcp/deploy.sh --cloud
+
+# Tear down all GCP resources when done
+./examples/clean-room-gcp/deploy.sh --teardown
+```
+
+See [§ Deployment script](#deployment-script) for full details.
+
+---
+
 ## Prerequisites
 
 | Tool | Install |
@@ -167,6 +188,53 @@ agreed query results to stdout.
   incoming messages to per-sender in-memory channels.
 - `Recv l` reads from the in-memory channel for sender `l`, preserving
   FIFO order per sender.
+
+---
+
+---
+
+## Deployment script
+
+`deploy.sh` automates the entire lifecycle. It accepts the following flags:
+
+| Flag | Description |
+|---|---|
+| `--local` | (default) All participants on this machine; Pub/Sub as transport |
+| `--cloud` | Each participant on a separate GCE `e2-micro` VM |
+| `--teardown` | Delete all Pub/Sub topics, subscriptions, and VMs |
+| `--project ID` | GCP project ID (overrides `$GCP_PROJECT`) |
+| `--server NAME` | Server location name (default: `server`) |
+| `--clients "a b c"` | Space-separated client names (default: `client1 client2`) |
+| `--zone ZONE` | GCE zone for `--cloud` mode (default: `us-central1-a`) |
+
+### What the script does
+
+**Both modes:**
+1. Enables `pubsub.googleapis.com` (and `compute.googleapis.com` for `--cloud`)
+2. Creates one ordered Pub/Sub topic + subscription per participant (idempotent)
+3. Builds the `clean-room-gcp` binary via `cabal build`
+
+**`--local` mode additionally:**
+4. Checks for Application Default Credentials (`~/.config/gcloud/application_default_credentials.json`)
+5. Starts each participant as a background process on this machine
+6. Streams all output to `$TMPDIR/<loc>.log` and prints results when done
+
+**`--cloud` mode additionally:**
+4. Creates a GCP service account with `roles/pubsub.editor`
+5. Provisions one `e2-micro` Debian 12 GCE VM per participant
+6. Waits for each VM to accept SSH
+7. Copies the binary to each VM via `gcloud compute scp`
+8. Runs each participant on its VM; collects output via SSH when done
+
+### Customising the participant set
+
+```bash
+# Three clients instead of two
+./deploy.sh --local --clients "alice bob carol"
+
+# Different server name
+./deploy.sh --local --server coordinator --clients "node1 node2"
+```
 
 ---
 
