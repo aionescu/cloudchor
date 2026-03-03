@@ -46,6 +46,20 @@ executable clean-room
     , sop-core   >= 0.5  && < 0.6
     , cloudchor
 
+executable clean-room-gcp
+  import: extensions, warnings
+
+  hs-source-dirs: clean-room-gcp
+  main-is: Main.hs
+
+  build-depends:
+    base         >= 4.16 && < 4.21
+    , gogol      >= 1.0  && < 2.0
+    , random     >= 1.2  && < 1.3
+    , sop-core   >= 0.5  && < 0.6
+    , text       >= 1.2  && < 2.2
+    , cloudchor
+
 executable unsoundness
   import: extensions, warnings
 

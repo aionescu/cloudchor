@@ -28,92 +28,134 @@ backend satisfies this by buffering incoming messages in a
 
 ---
 
+## Hackage Library Status
+
+Before comparing platforms, it is worth checking what Haskell libraries are
+actually available and maintained, since a backend with no usable SDK requires
+falling back to raw REST calls.
+
+| Platform | Package(s) | Last upload | Versions | Status |
+|---|---|---|---|---|
+| Google Cloud Pub/Sub | `gogol` + `gogol-pubsub` | May 2025 | 8 | Excellent |
+| AWS SQS | `amazonka` + `amazonka-sqs` | July 2023 | 60+ | Good |
+| Redis Streams | `hedis` | April 2023 | 93 | Good |
+| Azure Service Bus | `azure-servicebus` | May 2014 | 5 | Abandoned |
+
+Azure is effectively ruled out: the only Haskell package is 11 years old and
+wraps a deprecated REST API version. Implementing an Azure backend would
+require raw HTTP calls via `wreq` or `req`, adding significant overhead with
+no scientific payoff.
+
+---
+
 ## Platform Comparison
+
+### Google Cloud Pub/Sub
+
+- One topic per participant (their inbox); other participants publish to it.
+- `Send`: `Publish` to the recipient's topic with a `sender` message
+  attribute; ordering keys enforce FIFO per sender.
+- Pull subscription with a background thread routes incoming messages to a
+  local `HashMap LocTm (Chan String)`.
+- `Recv l`: reads from `chans ! l`, identical in structure to the HTTP backend.
+- Haskell library: `gogol` + `gogol-pubsub`, last updated **May 2025** —
+  the best-maintained cloud SDK available for Haskell.
 
 ### AWS SQS FIFO
 
-- One queue per participant (their inbox).
+- One FIFO queue per participant (their inbox).
 - `Send`: `SendMessage` with `MessageGroupId = sender` (enforces per-sender
   ordering) and a `MessageAttribute` carrying the sender name.
 - Background polling thread routes incoming messages to a local
   `HashMap LocTm (Chan String)` — the same structure used in `Http.hs`.
 - `Recv l`: reads from `chans ! l`, identical to the HTTP backend.
-- Haskell library: `amazonka-sqs` (actively maintained, well-typed).
-
-### Google Cloud Pub/Sub
-
-- One topic per participant.
-- `Send`: `Publish` with a `sender` message attribute; ordering keys give
-  FIFO per key.
-- Pull subscription with a background thread routes to local `Chan`.
-- Haskell library: `gogol-pubsub` is poorly maintained; would require direct
-  REST calls.
+- Haskell library: `amazonka` + `amazonka-sqs`, last updated **July 2023**.
 
 ### Azure Service Bus (Sessions)
 
 - One queue per participant; `SessionId = sender`.
 - Sessions natively guarantee ordered delivery per sender — the most precise
   semantic match to `Recv l`.
-- No official Haskell SDK; requires raw REST calls, adding significant
-  implementation overhead.
+- No maintained Haskell SDK; would require raw REST calls via `wreq` or `req`.
+- **Not recommended** due to the absence of a usable library.
 
 ### Redis Streams (ElastiCache / Azure Cache for Redis)
 
 - `XADD` to recipient's stream with a `sender` field; background thread does
   `XREAD`.
-- Simplest possible API; `hedis` is an excellent Haskell library.
+- Simplest possible API; `hedis` is an excellent Haskell library with 93
+  versions and active maintenance.
 - Not cloud-native enough for a CCS real-world deployment claim.
 
 ---
 
-## Recommendation: AWS SQS FIFO
+## Recommendation: Google Cloud Pub/Sub
 
-AWS SQS FIFO is the best fit for four reasons.
+Taking library maintenance into account, **Google Cloud Pub/Sub** (`gogol` +
+`gogol-pubsub`) is the strongest choice for four reasons.
 
-**1. Semantic match.**
-`MessageGroupId = sender` provides exactly the per-sender FIFO ordering that
-`Recv l` requires, without any local reordering logic.
+**1. Best-maintained Haskell library.**
+`gogol-pubsub` was updated in May 2025 — more recently than any other cloud
+SDK for Haskell. `amazonka-sqs` is a solid second (July 2023) but lags behind.
 
-**2. Implementation mirrors the HTTP backend.**
+**2. Semantic match.**
+Pub/Sub ordering keys enforce FIFO delivery per key. Setting the ordering key
+to the sender name provides exactly the per-sender ordering that `Recv l`
+requires.
+
+**3. Implementation mirrors the HTTP backend.**
 The new backend has the same structure as `Network/Http.hs`: a background
-polling thread fills `HashMap LocTm (Chan String)`, and `Recv l` reads from
+pull thread fills `HashMap LocTm (Chan String)`, and `Recv l` reads from
 `chans ! l`. The structural diff from the HTTP backend is small.
 
-**3. Best Haskell library.**
-`amazonka-sqs` covers the full SQS API with well-typed request/response
-types and integrates cleanly with `MonadIO`.
-
 **4. Error propagation story.**
-SQS exposes delivery failures as structured events: visibility timeouts,
-failed acknowledgements, and dead-letter queues. These are exactly the
-cloud-level errors that choreographic error propagation needs to handle,
-making SQS a natural motivating platform for the follow-up paper.
+Pub/Sub surfaces delivery failures as structured events: unacknowledged
+messages are redelivered, dead-letter topics capture undeliverable messages,
+and subscription push/pull errors are typed. These are exactly the cloud-level
+errors that choreographic error propagation needs to handle, making Pub/Sub a
+natural motivating platform for the follow-up paper.
 
 ---
 
-## Sketch of `SqsConfig`
+## Sketch of `PubSubConfig`
 
 ```haskell
-data SqsConfig = SqsConfig
-  { sqsEnv     :: Amazonka.Env
-  , locToQueue :: HashMap LocTm QueueUrl  -- each location's inbox queue URL
+data PubSubConfig = PubSubConfig
+  { pubSubEnv   :: Gogol.Env '[]
+  , locToTopic  :: HashMap LocTm TopicName  -- each location's inbox topic
+  , locToSub    :: HashMap LocTm SubName    -- each location's pull subscription
   }
 
-mkSqsConfig :: Amazonka.Env -> [(LocTm, QueueUrl)] -> SqsConfig
-mkSqsConfig env pairs = SqsConfig env (HashMap.fromList pairs)
+mkPubSubConfig :: Gogol.Env '[]
+               -> [(LocTm, (TopicName, SubName))]
+               -> PubSubConfig
+mkPubSubConfig env pairs = PubSubConfig env topics subs
+  where
+    topics = HashMap.fromList [(l, t) | (l, (t, _)) <- pairs]
+    subs   = HashMap.fromList [(l, s) | (l, (_, s)) <- pairs]
 ```
 
-`runNetworkSqs` would follow the same pattern as `runNetworkHttp`:
+`runNetworkPubSub` follows the same pattern as `runNetworkHttp`:
 
 1. Allocate `HashMap LocTm (Chan String)` (one channel per peer).
-2. Fork a `pollThread` that calls `SQS.receiveMessage` in a loop, reads the
-   `sender` attribute, and writes the body to `chans ! sender`.
-3. Handle `Send a l` by calling `SQS.sendMessage` to `locToQueue ! l` with
-   `MessageGroupId = self` and `MessageBody = show a`.
+2. Fork a `pullThread` that calls `projects.subscriptions.pull` in a loop,
+   reads the `sender` message attribute, writes the body to `chans ! sender`,
+   and acknowledges the message.
+3. Handle `Send a l` by calling `projects.topics.publish` to
+   `locToTopic ! l` with ordering key and attribute `sender = self` and
+   message data `show a`.
 4. Handle `Recv l` by reading from `chans ! l`.
 
 ```haskell
-instance Backend SqsConfig where
-  locs       = HashMap.keys . locToQueue
-  runNetwork = runNetworkSqs
+instance Backend PubSubConfig where
+  locs       = HashMap.keys . locToTopic
+  runNetwork = runNetworkPubSub
 ```
+
+### AWS SQS FIFO as a close second
+
+If Google Cloud is not available, AWS SQS FIFO is a drop-in alternative with
+the same structural pattern. Replace `projects.topics.publish` with
+`SQS.sendMessage` (setting `MessageGroupId = self`) and the pull loop with
+`SQS.receiveMessage` polling. The `amazonka` + `amazonka-sqs` libraries
+(July 2023) are well-typed and cover the full API.
