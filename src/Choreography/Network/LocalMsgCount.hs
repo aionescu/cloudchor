@@ -1,4 +1,4 @@
--- SPDX-FileCopyrightText: 2025 Alex Ionescu
+-- SPDX-FileCopyrightText: 2025-2026 Alex Ionescu
 -- SPDX-License-Identifier: MPL-2.0
 
 -- | This module defines an instrumented version of the `Local` backend,

@@ -1,5 +1,5 @@
 -- SPDX-FileCopyrightText: 2022 Gan Shen
--- SPDX-FileCopyrightText: 2025 Alex Ionescu
+-- SPDX-FileCopyrightText: 2025-2026 Alex Ionescu
 -- SPDX-License-Identifier: MPL-2.0 AND BSD-3-Clause
 
 -- | This module implments the HTTP message transport backend for the `Network`
