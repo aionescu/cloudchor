@@ -58,7 +58,7 @@ executable unsoundness
     , servant        >= 0.19 && < 0.21
     , servant-client >= 0.19 && < 0.21
     , servant-server >= 0.19 && < 0.21
-    , warp           >= 3.3  && < 3.4
+    , warp           >= 3.3  && < 3.5
     , cloudchor
 
 executable HasChor-bank-2pc
@@ -131,7 +131,7 @@ executable HasChor-karatsuba
   build-depends:
     base         >= 4.16 && < 4.21
     , async      >= 2.2  && < 2.3
-    , containers >= 0.6  && < 0.7
+    , containers >= 0.6  && < 0.8
     , cloudchor
 
 executable HasChor-kvs1
@@ -141,7 +141,7 @@ executable HasChor-kvs1
 
   build-depends:
     base         >= 4.16 && < 4.21
-    , containers >= 0.6  && < 0.7
+    , containers >= 0.6  && < 0.8
     , time       >= 1.11 && < 1.13
     , cloudchor
 
@@ -152,7 +152,7 @@ executable HasChor-kvs2
 
   build-depends:
     base         >= 4.16 && < 4.21
-    , containers >= 0.6  && < 0.7
+    , containers >= 0.6  && < 0.8
     , time       >= 1.11 && < 1.13
     , cloudchor
 
@@ -163,7 +163,7 @@ executable HasChor-kvs3
 
   build-depends:
     base         >= 4.16 && < 4.21
-    , containers >= 0.6  && < 0.7
+    , containers >= 0.6  && < 0.8
     , time       >= 1.11 && < 1.13
     , cloudchor
 
@@ -174,7 +174,7 @@ executable HasChor-kvs4
 
   build-depends:
     base         >= 4.16 && < 4.21
-    , containers >= 0.6  && < 0.7
+    , containers >= 0.6  && < 0.8
     , time       >= 1.11 && < 1.13
     , cloudchor
 
@@ -188,7 +188,7 @@ executable HasChor-mergesort
 
   build-depends:
     base         >= 4.16 && < 4.21
-    , containers >= 0.6  && < 0.7
+    , containers >= 0.6  && < 0.8
     , time       >= 1.11 && < 1.13
     , cloudchor
 
@@ -203,7 +203,7 @@ executable HasChor-quicksort
   build-depends:
     base         >= 4.16 && < 4.21
     , async      >= 2.2  && < 2.3
-    , containers >= 0.6  && < 0.7
+    , containers >= 0.6  && < 0.8
     , time       >= 1.11 && < 1.13
     , cloudchor
 
